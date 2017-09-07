@@ -23,6 +23,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <security.version>1.0.0-SNAPSHOT</security.version>
+        <guava.version>23.0</guava.version>
     </properties>
 
     <dependencyManagement>
@@ -41,6 +42,12 @@
                 <version>Dalston.SR2</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

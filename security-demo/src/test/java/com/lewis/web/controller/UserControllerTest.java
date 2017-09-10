@@ -35,9 +35,14 @@ public class UserControllerTest {
 
     @Test
     public void whenQuerySuccess() throws Exception {
-        String result = mockMvc.perform(MockMvcRequestBuilders.get("/user").contentType(MediaType.APPLICATION_JSON_UTF8))
+        String result = mockMvc.perform(MockMvcRequestBuilders.get("/user")
+                .param("name","name_2")
+                .param("size","15")
+                .param("page","3")
+                .param("sort","age,desc")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(100))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(1))
                 .andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
@@ -59,7 +64,7 @@ public class UserControllerTest {
 
     @Test
     public void whenCreateSuccess() throws Exception {
-        User user = new User(null,"lewis","pw_lewi",new Date());
+        User user = new User(null,"lewis",null,new Date());
         String userString = JsonUtil.toString(user);
         String contentAsString = mockMvc.perform(MockMvcRequestBuilders.post("/user").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(userString))
@@ -71,8 +76,21 @@ public class UserControllerTest {
     }
 
     @Test
-    public void whenUpdateSuccess(){
+    public void whenUpdateSuccess() throws Exception {
         Date date = new Date(LocalDateTime.now().plusYears(10).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+        User user = new User(1,"lewis","lewis_password",date);
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/1").contentType(MediaType.APPLICATION_JSON_UTF8).content(JsonUtil.toString(user)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("1"));
+
+    }
+
+    @Test
+    public void whenDeleteSuccess() throws Exception {
+        String contentAsString = mockMvc.perform(MockMvcRequestBuilders.delete("/user/1").contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(contentAsString);
     }
 
 

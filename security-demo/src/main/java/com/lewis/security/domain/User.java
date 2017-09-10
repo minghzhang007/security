@@ -1,9 +1,11 @@
 package com.lewis.security.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.lewis.security.validator.MyConstraint;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Past;
 import java.util.Date;
 
 public class User {
@@ -11,11 +13,13 @@ public class User {
     @JsonView(View.Summary.class)
     private Integer id;
     @JsonView(View.Summary.class)
+    @MyConstraint(message = "测试校验Name没有通过")
     private String name;
     @JsonView(View.Summary.class)
-    @NotBlank
+    @NotBlank(message = "密码不能为空")
     private String password;
     @JsonView(View.Summary.class)
+    @Past(message = "生日必须为过去的时间")
     private Date birthday;
     @JsonView(View.DetailSummary.class)
     private String email;

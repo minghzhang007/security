@@ -78,7 +78,7 @@ public class UserControllerTest {
     @Test
     public void whenUpdateSuccess() throws Exception {
         Date date = new Date(LocalDateTime.now().plusYears(10).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
-        User user = new User(1,"lewis","lewis_password",date);
+        User user = new User(1,"lewis",null,date);
         mockMvc.perform(MockMvcRequestBuilders.put("/user/1").contentType(MediaType.APPLICATION_JSON_UTF8).content(JsonUtil.toString(user)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("1"));
